@@ -25,10 +25,7 @@ class Parser:
             self.current_token = next(self._token_generator)
 
         if self.current_token.group not in expected_token_groups:
-            self.error(f"Token {self.current_token} is not instance of {expected_token_groups} groups")
-
-    def error(self, msg):
-        raise RuntimeError(msg)
+            self.print_error(expected_token_groups)
 
     def start(self):
         self.update_current_token((DICT_OPEN_GROUP,))
@@ -79,7 +76,11 @@ class Parser:
         self.update_current_token((COLON_GROUP,))
         self.parse_dict_value(dict_key)
 
+    def print_error(self, expected_token_groups):
+        group, value, line, column = self.current_token
+        expected_token_groups_string = " or ".join(expected_token_groups)
 
-class InvalidCharacterException(Exception):
-    def __init__(self, character, line_number):
-        super().__init__(f'Invalid character {character} on line {line_number}')
+        exit(
+            f'Invalid token group: {value} at [{line}, {column}]. '
+            f'Expected {expected_token_groups_string} but got {group}.'
+        )

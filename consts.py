@@ -1,5 +1,3 @@
-import collections
-
 END_OF_FILE_GROUP = 'end_of_file'
 
 NEW_LINE_GROUP = 'new_line'

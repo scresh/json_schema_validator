@@ -1,5 +1,4 @@
 import collections
-
 from consts import (
     REGEX_DICT,
     NEW_LINE_GROUP,
@@ -33,7 +32,7 @@ class TokenGenerator:
             match = self._match_token_func(self._input_string, self._current_position)
 
         if self._current_position != len(self._input_string):
-            raise InvalidCharacterException(self._input_string[self._current_position], self._line_number)
+            self.print_error()
 
         yield Token(END_OF_FILE_GROUP, '', self._line_number, self._current_position - self._line_start)
 
@@ -56,7 +55,11 @@ class TokenGenerator:
         tokens_regex = '|'.join(f'(?P<{k}>{v})' for k, v in tokens_dict.items())
         return re.compile(tokens_regex).match
 
+    def print_error(self):
+        invalid_character = self._input_string[self._current_position]
+        line = self._line_number
+        column = self._current_position - self._line_start
 
-class InvalidCharacterException(Exception):
-    def __init__(self, character, line_number):
-        super().__init__(f'Invalid character {character} on line {line_number}')
+        exit(
+            f'Invalid character: {invalid_character} at [{line}, {column}].\n'
+        )
