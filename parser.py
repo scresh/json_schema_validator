@@ -9,9 +9,9 @@ from consts import (
     LIST_OPEN_GROUP,
     DICT_CLOSE_GROUP,
     COMMA_GROUP,
-    LIST_CLOSE_GROUP)
-
-EXPECTED_GROUPS = {}
+    LIST_CLOSE_GROUP,
+    EXPECTED_GROUPS,
+)
 
 
 class Parser:
@@ -46,13 +46,15 @@ class Parser:
 
             self.update_current_token((COMMA_GROUP, LIST_CLOSE_GROUP))
             if self.current_token.group == COMMA_GROUP:
-                self.update_current_token((STRING_GROUP, NUMBER_GROUP, DICT_OPEN_GROUP, LIST_CLOSE_GROUP, LIST_CLOSE_GROUP))
+                self.update_current_token(
+                    (STRING_GROUP, NUMBER_GROUP, DICT_OPEN_GROUP, LIST_CLOSE_GROUP, LIST_CLOSE_GROUP))
 
         print(f"[OK] list {self.current_token}")
 
     def parse_dict_value(self, dict_key):
         expected_groups = EXPECTED_GROUPS.get(
-            dict_key, (STRING_GROUP, NUMBER_GROUP, DICT_OPEN_GROUP, LIST_OPEN_GROUP))
+            dict_key, (STRING_GROUP, NUMBER_GROUP, DICT_OPEN_GROUP, LIST_OPEN_GROUP)
+        )
 
         self.update_current_token(expected_groups)
         if self.current_token.group == DICT_OPEN_GROUP:
@@ -76,3 +78,8 @@ class Parser:
         dict_key = self.current_token.value
         self.update_current_token((COLON_GROUP,))
         self.parse_dict_value(dict_key)
+
+
+class InvalidCharacterException(Exception):
+    def __init__(self, character, line_number):
+        super().__init__(f'Invalid character {character} on line {line_number}')

@@ -38,4 +38,21 @@ REGEX_DICT = {
     COMMA_GROUP: COMMA_REGEX,
 }
 
-Token = collections.namedtuple('Token', ['group', 'value', 'line', 'column'])
+
+EXPECTED_GROUPS = {
+    '"$id"': (STRING_GROUP,),
+    '"$schema"': (STRING_GROUP,),
+    '"title"': (STRING_GROUP,),
+    '"properties"': (DICT_OPEN_GROUP,),
+    '"description"': (STRING_GROUP,),
+    '"required"': (LIST_OPEN_GROUP,),
+    '"minimum"': (NUMBER_GROUP,),
+    '"maximum"': (NUMBER_GROUP,),
+    '"minLength﻿"': (NUMBER_GROUP,),
+    '"maxLength﻿"': (NUMBER_GROUP,),
+    '"enum"': (LIST_OPEN_GROUP,),
+    '"definitions"': (DICT_OPEN_GROUP,),
+    '"$ref"': (STRING_GROUP,),
+}
+
+

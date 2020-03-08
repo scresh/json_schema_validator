@@ -1,10 +1,13 @@
+import collections
+
 from consts import (
     REGEX_DICT,
     NEW_LINE_GROUP,
     END_OF_FILE_GROUP,
-    Token,
 )
 import re
+
+Token = collections.namedtuple('Token', ['group', 'value', 'line', 'column'])
 
 
 class TokenGenerator:
