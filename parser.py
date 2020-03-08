@@ -33,6 +33,8 @@ class Parser:
         self.update_current_token((END_OF_FILE_GROUP,))
 
     def parse_list(self):
+        list_start = (self.current_token.line, self.current_token.column)
+
         self.update_current_token((STRING_GROUP, NUMBER_GROUP, DICT_OPEN_GROUP, LIST_CLOSE_GROUP, LIST_CLOSE_GROUP))
 
         while self.current_token.group != LIST_CLOSE_GROUP:
@@ -46,7 +48,8 @@ class Parser:
                 self.update_current_token(
                     (STRING_GROUP, NUMBER_GROUP, DICT_OPEN_GROUP, LIST_CLOSE_GROUP, LIST_CLOSE_GROUP))
 
-        print(f"[OK] list {self.current_token}")
+        list_end = (self.current_token.line, self.current_token.column)
+        print(f"[OK] DICT [{list_start} - {list_end}]")
 
     def parse_dict_value(self, dict_key):
         expected_groups = EXPECTED_GROUPS.get(
@@ -60,6 +63,7 @@ class Parser:
             self.parse_list()
 
     def parse_dict(self):
+        dict_start = (self.current_token.line, self.current_token.column)
         self.update_current_token((STRING_GROUP, NUMBER_GROUP, DICT_CLOSE_GROUP))
 
         while self.current_token.group != DICT_CLOSE_GROUP:
@@ -69,7 +73,8 @@ class Parser:
             if self.current_token.group == COMMA_GROUP:
                 self.update_current_token((STRING_GROUP, NUMBER_GROUP, DICT_CLOSE_GROUP))
 
-        print(f"[OK] dict {self.current_token}")
+        dict_end = (self.current_token.line, self.current_token.column)
+        print(f"[OK] DICT [{dict_start} - {dict_end}]")
 
     def parse_dict_item(self):
         dict_key = self.current_token.value
@@ -81,6 +86,6 @@ class Parser:
         expected_token_groups_string = " or ".join(expected_token_groups)
 
         exit(
-            f'Invalid token group: {value} at [{line}, {column}]. '
+            f'Invalid token group: {value} at {(line, column)}. '
             f'Expected {expected_token_groups_string} but got {group}.'
         )
