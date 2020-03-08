@@ -11,7 +11,7 @@ NUMBER_GROUP = 'number'
 COLON_GROUP = 'colon'
 COMMA_GROUP = 'comma'
 
-NEW_LINE_REGEX = r'[\n]+'
+NEW_LINE_REGEX = r'\n'
 WHITE_SPACE_REGEX = r'[ \t]+'
 STRING_REGEX = r'"(?:\\.|[^"\\])*?"'
 DICT_OPEN_REGEX = r'\{'
